@@ -1,5 +1,3 @@
-let favorites = [];
-
 const books = [
     {
         id: 1,
@@ -7,7 +5,8 @@ const books = [
         author: "John T. F. Burgess & Emily J. M. Knox",
         category: "Information Ethics",
         description: "A reference work exploring the principles, concepts and history of information ethics, including privacy, human rights, information access, censorship and intellectual property.",
-        available: true
+        available: true,
+        favorite: false
     },
     {
         id: 2,
@@ -15,7 +14,8 @@ const books = [
         author: "Laura A. Millar",
         category: "Archives",
         description: "A practical guide to archival management in the digital age, covering archival history, principles, acquisition, preservation and the responsibilities of modern archivists.",
-        available: true
+        available: true,
+        favorite: false
     },
     {
         id: 3,
@@ -23,7 +23,8 @@ const books = [
         author: "Shailoo Bedi & Jenaya Webb",
         category: "Research Methods",
         description: "An introduction to visual research methods in library and information studies, exploring how maps, drawings, videos and other visual elements can communicate information.",
-        available: false
+        available: false,
+        favorite: false
     },
     {
         id: 4,
@@ -31,7 +32,8 @@ const books = [
         author: "G. Edward Evans & Stacey Greenwell",
         category: "Library Management",
         description: "A practical guide to management in libraries and information organizations, covering people management, budgets, resources, technology and professional development.",
-        available: true
+        available: true,
+        favorite: false
     },
     {
         id: 5,
@@ -39,7 +41,8 @@ const books = [
         author: "Paul Pedley",
         category: "Information Law",
         description: "A beginner-friendly guide to information law that explains important legal principles and real-life cases relevant to libraries and information professionals.",
-        available: true
+        available: true,
+        favorite: false
     },
     {
         id: 6,
@@ -47,7 +50,8 @@ const books = [
         author: "Paul T. Jaeger & Natalie Greene Taylor",
         category: "Information Policy",
         description: "An introduction to information policy covering its history, development and impact on accessibility, digital literacy, inclusion, privacy and information regulation.",
-        available: false
+        available: false,
+        favorite: false
     },
     {
         id: 7,
@@ -55,7 +59,8 @@ const books = [
         author: "Claudio Gnoli",
         category: "Knowledge Organization",
         description: "An introduction to knowledge organization covering structures such as lists and hierarchies, as well as tagging, taxonomies and the theoretical foundations of organizing knowledge.",
-        available: true
+        available: true,
+        favorite: false
     },
     {
         id: 8,
@@ -63,7 +68,8 @@ const books = [
         author: "Graham P. Cornish",
         category: "Copyright",
         description: "A practical guide to understanding copyright law in the context of libraries, archives and information services, including copyright issues affecting creative and information resources.",
-        available: true
+        available: true,
+        favorite: false
     },
     {
         id: 9,
@@ -71,24 +77,24 @@ const books = [
         author: "Marcia Lei Zeng & Jian Qin",
         category: "Metadata",
         description: "A comprehensive introduction to metadata schemas and best practices, including metadata standards, linked data and their use in libraries, archives and museums.",
-        available: true
+        available: true,
+        favorite: false
     }
 ];
 
+/* =========================
+   DISPLAY BOOKS
+========================= */
 
 function displayBooks(bookList) {
-
     const bookListContainer = document.getElementById("book-list");
 
     bookListContainer.innerHTML = "";
 
     bookList.forEach((book) => {
-
         const bookCard = document.createElement("article");
 
         bookCard.className = "book-card";
-
-        const isFavorite = favorites.includes(book.id);
 
         bookCard.innerHTML = `
             <div class="book-cover">
@@ -96,7 +102,6 @@ function displayBooks(bookList) {
             </div>
 
             <div class="book-info">
-
                 <h3>${book.title}</h3>
 
                 <p class="author">By ${book.author}</p>
@@ -109,8 +114,8 @@ function displayBooks(bookList) {
 
                 <button
                     class="borrow-button"
-                    ${book.available ? "" : "disabled"}
                     data-book-id="${book.id}"
+                    ${book.available ? "" : "disabled"}
                 >
                     ${book.available ? "Borrow Book" : "Unavailable"}
                 </button>
@@ -123,13 +128,11 @@ function displayBooks(bookList) {
                 </button>
 
                 <button
-                    class="favorite-button ${isFavorite ? "favorited" : ""}"
+                    class="favorite-button"
                     data-book-id="${book.id}"
-                    aria-label="${isFavorite ? "Remove from favorites" : "Add to favorites"}"
                 >
-                    ${isFavorite ? "❤️ Favorited" : "♡ Add to Favorites"}
+                    ${book.favorite ? "★ Remove Favorite" : "☆ Add to Favorites"}
                 </button>
-
             </div>
         `;
 
@@ -138,44 +141,26 @@ function displayBooks(bookList) {
 }
 
 
+/* =========================
+   FILTER BOOKS
+========================= */
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const searchInput = document.getElementById("search-input");
+    const categoryFilter = document.getElementById("category-filter");
 
-    const categoryFilter =
-        document.getElementById("category-filter");
+    const bookDetails = document.getElementById("book-details");
+    const closeDetails = document.getElementById("close-details");
 
-    const bookDetails =
-        document.getElementById("book-details");
+    const bookListContainer = document.getElementById("book-list");
 
-    const closeDetails =
-        document.getElementById("close-details");
-
-    const bookListContainer =
-        document.getElementById("book-list");
-
-    const favoritesButton =
-        document.getElementById("favorites-button");
-
-    const allBooksButton =
-        document.getElementById("all-books-button");
-
-
-    /*
-     * Search, category and favorites filtering
-     */
 
     function filterBooks() {
 
-        const searchQuery =
-            searchInput.value.toLowerCase().trim();
+        const searchQuery = searchInput.value.toLowerCase().trim();
 
-        const selectedCategory =
-            categoryFilter.value;
-
-        const showingFavorites =
-            favoritesButton.classList.contains("active");
-
+        const selectedCategory = categoryFilter.value;
 
         const filteredBooks = books.filter((book) => {
 
@@ -184,27 +169,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 book.author.toLowerCase().includes(searchQuery) ||
                 book.category.toLowerCase().includes(searchQuery);
 
-
             const matchesCategory =
                 selectedCategory === "all" ||
                 book.category === selectedCategory;
 
-
-            const matchesFavorites =
-                !showingFavorites ||
-                favorites.includes(book.id);
-
-
-            return (
-                matchesSearch &&
-                matchesCategory &&
-                matchesFavorites
-            );
+            return matchesSearch && matchesCategory;
         });
 
-
         displayBooks(filteredBooks);
-
 
         if (filteredBooks.length === 0) {
 
@@ -217,9 +189,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /*
-     * Book details
-     */
+    /* =========================
+       BORROW BOOK
+    ========================= */
+
+    bookListContainer.addEventListener("click", (event) => {
+
+        if (!event.target.classList.contains("borrow-button")) {
+            return;
+        }
+
+        const bookId = Number(event.target.dataset.bookId);
+
+        const book = books.find((book) => book.id === bookId);
+
+        if (!book) {
+            return;
+        }
+
+        if (!book.available) {
+            return;
+        }
+
+        book.available = false;
+
+        alert(`You have successfully borrowed "${book.title}".`);
+
+        filterBooks();
+    });
+
+
+    /* =========================
+       VIEW BOOK DETAILS
+    ========================= */
 
     bookListContainer.addEventListener("click", (event) => {
 
@@ -227,75 +229,65 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const bookId = Number(event.target.dataset.bookId);
 
-        const bookId =
-            Number(event.target.dataset.bookId);
-
-
-        const book =
-            books.find((book) => book.id === bookId);
-
+        const book = books.find((book) => book.id === bookId);
 
         if (!book) {
             return;
         }
 
-
         document.getElementById("details-title").textContent =
             book.title;
-
 
         document.getElementById("details-author").textContent =
             `By ${book.author}`;
 
-
         document.getElementById("details-category").textContent =
             `Category: ${book.category}`;
-
 
         document.getElementById("details-description").textContent =
             book.description;
 
-
         const availability =
             document.getElementById("details-availability");
-
 
         availability.textContent = book.available
             ? "Availability: Available"
             : "Availability: Currently Borrowed";
 
-
-        availability.className =
-            book.available
-                ? "available"
-                : "unavailable";
-
+        availability.className = book.available
+            ? "available"
+            : "unavailable";
 
         const detailsActions =
             document.getElementById("details-actions");
 
-
         detailsActions.innerHTML = book.available
             ? `
-                <button class="borrow-button">
+                <button
+                    class="borrow-button"
+                    data-book-id="${book.id}"
+                >
                     Borrow Book
                 </button>
-              `
+            `
             : `
-                <button class="borrow-button" disabled>
+                <button
+                    class="borrow-button"
+                    disabled
+                >
                     Currently Unavailable
                 </button>
-              `;
-
+            `;
 
         bookDetails.classList.remove("hidden");
     });
 
 
-    /*
-     * Close book details
-     */
+    /* =========================
+       CLOSE BOOK DETAILS
+    ========================= */
 
     closeDetails.addEventListener("click", () => {
 
@@ -303,6 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+
+    /* Close details by clicking outside */
 
     bookDetails.addEventListener("click", (event) => {
 
@@ -315,9 +309,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    /*
-     * Favorite / unfavorite books
-     */
+    /* =========================
+       FAVORITES
+    ========================= */
 
     bookListContainer.addEventListener("click", (event) => {
 
@@ -325,79 +319,37 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        const bookId = Number(event.target.dataset.bookId);
 
-        const bookId =
-            Number(event.target.dataset.bookId);
+        const book = books.find((book) => book.id === bookId);
 
-
-        if (favorites.includes(bookId)) {
-
-            favorites = favorites.filter(
-                (id) => id !== bookId
-            );
-
-        } else {
-
-            favorites.push(bookId);
-
+        if (!book) {
+            return;
         }
 
+        book.favorite = !book.favorite;
 
         filterBooks();
     });
 
 
-    /*
-     * Search
-     */
+    /* =========================
+       SEARCH
+    ========================= */
 
-    searchInput.addEventListener(
-        "input",
-        filterBooks
-    );
+    searchInput.addEventListener("input", filterBooks);
 
 
-    /*
-     * Category filter
-     */
+    /* =========================
+       CATEGORY FILTER
+    ========================= */
 
-    categoryFilter.addEventListener(
-        "change",
-        filterBooks
-    );
+    categoryFilter.addEventListener("change", filterBooks);
 
 
-    /*
-     * Show all books
-     */
-
-    allBooksButton.addEventListener("click", () => {
-
-        allBooksButton.classList.add("active");
-
-        favoritesButton.classList.remove("active");
-
-        filterBooks();
-    });
-
-
-    /*
-     * Show favorites
-     */
-
-    favoritesButton.addEventListener("click", () => {
-
-        favoritesButton.classList.add("active");
-
-        allBooksButton.classList.remove("active");
-
-        filterBooks();
-    });
-
-
-    /*
-     * Display catalogue when page loads
-     */
+    /* =========================
+       INITIAL DISPLAY
+    ========================= */
 
     filterBooks();
 
