@@ -114,3 +114,28 @@ main {
     background: #aaa;
     cursor: not-allowed;
 }
+
+.search-container {
+    margin-bottom: 25px;
+}
+
+#search-input {
+    width: 100%;
+    max-width: 600px;
+    padding: 12px 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+#search-input:focus {
+    outline: none;
+    border-color: #333;
+}
+
+.no-results {
+    text-align: center;
+    padding: 30px;
+    font-size: 18px;
+}

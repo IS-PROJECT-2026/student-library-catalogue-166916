@@ -104,4 +104,30 @@ function displayBooks(bookList) {
 
 document.addEventListener("DOMContentLoaded", () => {
     displayBooks(books);
+
+    const searchInput = document.getElementById("search-input");
+
+    searchInput.addEventListener("input", () => {
+        const searchQuery = searchInput.value.toLowerCase().trim();
+
+        const filteredBooks = books.filter((book) => {
+            return (
+                book.title.toLowerCase().includes(searchQuery) ||
+                book.author.toLowerCase().includes(searchQuery) ||
+                book.category.toLowerCase().includes(searchQuery)
+            );
+        });
+
+        displayBooks(filteredBooks);
+
+        const bookListContainer = document.getElementById("book-list");
+
+        if (filteredBooks.length === 0) {
+            bookListContainer.innerHTML = `
+                <p class="no-results">
+                    No books found matching "${searchInput.value}".
+                </p>
+            `;
+        }
+    });
 });
