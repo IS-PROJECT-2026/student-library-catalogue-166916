@@ -103,19 +103,24 @@ function displayBooks(bookList) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    displayBooks(books);
-
     const searchInput = document.getElementById("search-input");
+    const categoryFilter = document.getElementById("category-filter");
 
-    searchInput.addEventListener("input", () => {
+    function filterBooks() {
         const searchQuery = searchInput.value.toLowerCase().trim();
+        const selectedCategory = categoryFilter.value;
 
         const filteredBooks = books.filter((book) => {
-            return (
+            const matchesSearch =
                 book.title.toLowerCase().includes(searchQuery) ||
                 book.author.toLowerCase().includes(searchQuery) ||
-                book.category.toLowerCase().includes(searchQuery)
-            );
+                book.category.toLowerCase().includes(searchQuery);
+
+            const matchesCategory =
+                selectedCategory === "all" ||
+                book.category === selectedCategory;
+
+            return matchesSearch && matchesCategory;
         });
 
         displayBooks(filteredBooks);
@@ -125,9 +130,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (filteredBooks.length === 0) {
             bookListContainer.innerHTML = `
                 <p class="no-results">
-                    No books found matching "${searchInput.value}".
+                    No books found matching your search and category.
                 </p>
             `;
         }
-    });
+    }
+
+    searchInput.addEventListener("input", filterBooks);
+
+    categoryFilter.addEventListener("change", filterBooks);
+
+    filterBooks();
 });

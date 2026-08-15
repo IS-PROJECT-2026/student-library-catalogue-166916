@@ -18,13 +18,26 @@
     <h2>Book Catalogue</h2>
 
     <div class="search-container">
-        <input
-            type="text"
-            id="search-input"
-            placeholder="Search by title, author, or category..."
-            aria-label="Search books"
-        >
-    </div>
+    <input
+        type="text"
+        id="search-input"
+        placeholder="Search by title, author, or category..."
+        aria-label="Search books"
+    >
+
+    <select id="category-filter" aria-label="Filter books by category">
+        <option value="all">All Categories</option>
+        <option value="Information Ethics">Information Ethics</option>
+        <option value="Archives">Archives</option>
+        <option value="Research Methods">Research Methods</option>
+        <option value="Library Management">Library Management</option>
+        <option value="Information Law">Information Law</option>
+        <option value="Information Policy">Information Policy</option>
+        <option value="Knowledge Organization">Knowledge Organization</option>
+        <option value="Copyright">Copyright</option>
+        <option value="Metadata">Metadata</option>
+    </select>
+</div>
 
     <div id="book-list"></div>
 </section>
