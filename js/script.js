@@ -1,3 +1,5 @@
+let favorites = [];
+
 const books = [
     {
         id: 1,
@@ -73,15 +75,20 @@ const books = [
     }
 ];
 
+
 function displayBooks(bookList) {
+
     const bookListContainer = document.getElementById("book-list");
 
     bookListContainer.innerHTML = "";
 
     bookList.forEach((book) => {
+
         const bookCard = document.createElement("article");
 
         bookCard.className = "book-card";
+
+        const isFavorite = favorites.includes(book.id);
 
         bookCard.innerHTML = `
             <div class="book-cover">
@@ -89,6 +96,7 @@ function displayBooks(bookList) {
             </div>
 
             <div class="book-info">
+
                 <h3>${book.title}</h3>
 
                 <p class="author">By ${book.author}</p>
@@ -113,6 +121,15 @@ function displayBooks(bookList) {
                 >
                     View Details
                 </button>
+
+                <button
+                    class="favorite-button ${isFavorite ? "favorited" : ""}"
+                    data-book-id="${book.id}"
+                    aria-label="${isFavorite ? "Remove from favorites" : "Add to favorites"}"
+                >
+                    ${isFavorite ? "❤️ Favorited" : "♡ Add to Favorites"}
+                </button>
+
             </div>
         `;
 
@@ -124,20 +141,41 @@ function displayBooks(bookList) {
 document.addEventListener("DOMContentLoaded", () => {
 
     const searchInput = document.getElementById("search-input");
-    const categoryFilter = document.getElementById("category-filter");
 
-    const bookDetails = document.getElementById("book-details");
-    const closeDetails = document.getElementById("close-details");
+    const categoryFilter =
+        document.getElementById("category-filter");
 
-    const bookListContainer = document.getElementById("book-list");
+    const bookDetails =
+        document.getElementById("book-details");
+
+    const closeDetails =
+        document.getElementById("close-details");
+
+    const bookListContainer =
+        document.getElementById("book-list");
+
+    const favoritesButton =
+        document.getElementById("favorites-button");
+
+    const allBooksButton =
+        document.getElementById("all-books-button");
 
 
-    
+    /*
+     * Search, category and favorites filtering
+     */
+
     function filterBooks() {
 
-        const searchQuery = searchInput.value.toLowerCase().trim();
+        const searchQuery =
+            searchInput.value.toLowerCase().trim();
 
-        const selectedCategory = categoryFilter.value;
+        const selectedCategory =
+            categoryFilter.value;
+
+        const showingFavorites =
+            favoritesButton.classList.contains("active");
+
 
         const filteredBooks = books.filter((book) => {
 
@@ -146,14 +184,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 book.author.toLowerCase().includes(searchQuery) ||
                 book.category.toLowerCase().includes(searchQuery);
 
+
             const matchesCategory =
                 selectedCategory === "all" ||
                 book.category === selectedCategory;
 
-            return matchesSearch && matchesCategory;
+
+            const matchesFavorites =
+                !showingFavorites ||
+                favorites.includes(book.id);
+
+
+            return (
+                matchesSearch &&
+                matchesCategory &&
+                matchesFavorites
+            );
         });
 
+
         displayBooks(filteredBooks);
+
 
         if (filteredBooks.length === 0) {
 
@@ -166,29 +217,41 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    
+    /*
+     * Book details
+     */
+
     bookListContainer.addEventListener("click", (event) => {
 
         if (!event.target.classList.contains("details-button")) {
             return;
         }
 
-        const bookId = Number(event.target.dataset.bookId);
 
-        const book = books.find((book) => book.id === bookId);
+        const bookId =
+            Number(event.target.dataset.bookId);
+
+
+        const book =
+            books.find((book) => book.id === bookId);
+
 
         if (!book) {
             return;
         }
 
+
         document.getElementById("details-title").textContent =
             book.title;
+
 
         document.getElementById("details-author").textContent =
             `By ${book.author}`;
 
+
         document.getElementById("details-category").textContent =
             `Category: ${book.category}`;
+
 
         document.getElementById("details-description").textContent =
             book.description;
@@ -197,17 +260,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const availability =
             document.getElementById("details-availability");
 
+
         availability.textContent = book.available
             ? "Availability: Available"
             : "Availability: Currently Borrowed";
 
-        availability.className = book.available
-            ? "available"
-            : "unavailable";
+
+        availability.className =
+            book.available
+                ? "available"
+                : "unavailable";
 
 
         const detailsActions =
             document.getElementById("details-actions");
+
 
         detailsActions.innerHTML = book.available
             ? `
@@ -226,31 +293,112 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-   
+    /*
+     * Close book details
+     */
+
     closeDetails.addEventListener("click", () => {
+
         bookDetails.classList.add("hidden");
+
     });
 
 
-   
     bookDetails.addEventListener("click", (event) => {
 
         if (event.target === bookDetails) {
+
             bookDetails.classList.add("hidden");
+
         }
 
     });
 
 
-    
-    searchInput.addEventListener("input", filterBooks);
+    /*
+     * Favorite / unfavorite books
+     */
+
+    bookListContainer.addEventListener("click", (event) => {
+
+        if (!event.target.classList.contains("favorite-button")) {
+            return;
+        }
 
 
-    
-    categoryFilter.addEventListener("change", filterBooks);
+        const bookId =
+            Number(event.target.dataset.bookId);
 
 
-    
+        if (favorites.includes(bookId)) {
+
+            favorites = favorites.filter(
+                (id) => id !== bookId
+            );
+
+        } else {
+
+            favorites.push(bookId);
+
+        }
+
+
+        filterBooks();
+    });
+
+
+    /*
+     * Search
+     */
+
+    searchInput.addEventListener(
+        "input",
+        filterBooks
+    );
+
+
+    /*
+     * Category filter
+     */
+
+    categoryFilter.addEventListener(
+        "change",
+        filterBooks
+    );
+
+
+    /*
+     * Show all books
+     */
+
+    allBooksButton.addEventListener("click", () => {
+
+        allBooksButton.classList.add("active");
+
+        favoritesButton.classList.remove("active");
+
+        filterBooks();
+    });
+
+
+    /*
+     * Show favorites
+     */
+
+    favoritesButton.addEventListener("click", () => {
+
+        favoritesButton.classList.add("active");
+
+        allBooksButton.classList.remove("active");
+
+        filterBooks();
+    });
+
+
+    /*
+     * Display catalogue when page loads
+     */
+
     filterBooks();
 
 });

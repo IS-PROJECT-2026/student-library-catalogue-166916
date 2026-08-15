@@ -18,6 +18,7 @@
             <h2>Book Catalogue</h2>
 
             <div class="search-container">
+
                 <input
                     type="text"
                     id="search-input"
@@ -25,7 +26,10 @@
                     aria-label="Search books"
                 >
 
-                <select id="category-filter" aria-label="Filter books by category">
+                <select
+                    id="category-filter"
+                    aria-label="Filter books by category"
+                >
                     <option value="all">All Categories</option>
                     <option value="Information Ethics">Information Ethics</option>
                     <option value="Archives">Archives</option>
@@ -37,13 +41,36 @@
                     <option value="Copyright">Copyright</option>
                     <option value="Metadata">Metadata</option>
                 </select>
+
+            </div>
+
+            <!-- Favorites Controls -->
+            <div class="favourites-controls">
+
+                <button
+                    id="all-books-button"
+                    class="filter-button active"
+                >
+                    All Books
+                </button>
+
+                <button
+                    id="favorites-button"
+                    class="filter-button"
+                >
+                    ❤️ Favorites
+                </button>
+
             </div>
 
             <div id="book-list"></div>
+
         </section>
+
 
         <!-- Book Details Modal -->
         <div id="book-details" class="book-details hidden">
+
             <div class="details-content">
 
                 <button
@@ -59,25 +86,36 @@
                 </div>
 
                 <div class="details-info">
+
                     <h2 id="details-title"></h2>
 
-                    <p id="details-author" class="details-author"></p>
+                    <p
+                        id="details-author"
+                        class="details-author"
+                    ></p>
 
-                    <p id="details-category" class="details-category"></p>
+                    <p
+                        id="details-category"
+                        class="details-category"
+                    ></p>
 
                     <h3>Description</h3>
+
                     <p id="details-description"></p>
 
                     <p id="details-availability"></p>
 
                     <div id="details-actions"></div>
+
                 </div>
 
             </div>
+
         </div>
 
     </main>
 
     <script src="js/script.js"></script>
+
 </body>
 </html>
