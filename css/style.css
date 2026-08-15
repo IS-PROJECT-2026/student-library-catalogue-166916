@@ -168,3 +168,181 @@ main {
     outline: none;
     border-color: #333;
 }
+
+/* Book Details Button */
+
+.details-button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #1f3c88;
+    border-radius: 6px;
+    background: white;
+    color: #1f3c88;
+    cursor: pointer;
+}
+
+.details-button:hover {
+    background: #eef2f8;
+}
+
+
+/* Book Details Modal */
+
+.book-details {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+    z-index: 1000;
+}
+
+
+/* Hidden state */
+
+.book-details.hidden {
+    display: none;
+}
+
+
+/* Details window */
+
+.details-content {
+    position: relative;
+
+    background: white;
+
+    width: 100%;
+    max-width: 700px;
+
+    border-radius: 12px;
+
+    padding: 30px;
+
+    max-height: 90vh;
+    overflow-y: auto;
+
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Close button */
+
+.close-details {
+    position: absolute;
+
+    top: 12px;
+    right: 18px;
+
+    border: none;
+    background: none;
+
+    font-size: 32px;
+
+    color: #555;
+
+    cursor: pointer;
+}
+
+.close-details:hover {
+    color: #b42318;
+}
+
+
+/* Details cover */
+
+.details-cover {
+    height: 180px;
+
+    background: #dbe4f5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    margin-bottom: 25px;
+
+    color: #1f3c88;
+
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+
+/* Details information */
+
+.details-info h2 {
+    color: #1f3c88;
+    margin-bottom: 12px;
+    padding-right: 40px;
+}
+
+.details-author {
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.details-category {
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    background: #eef2f8;
+
+    border-radius: 20px;
+
+    font-size: 0.9rem;
+
+    margin-bottom: 20px;
+}
+
+.details-info h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#details-description {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+#details-availability {
+    margin-bottom: 15px;
+}
+
+
+/* Details actions */
+
+#details-actions .borrow-button {
+    max-width: 250px;
+}
+
+
+/* Responsive layout */
+
+@media (max-width: 700px) {
+
+    .search-container {
+        flex-direction: column;
+    }
+
+    #category-filter {
+        width: 100%;
+    }
+
+    .details-content {
+        padding: 25px 20px;
+    }
+
+    .details-cover {
+        height: 140px;
+    }
+}
