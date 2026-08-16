@@ -401,3 +401,209 @@ main {
     color: #8a6800;
     font-weight: bold;
 }
+
+/* =========================
+   RESPONSIVE UI - ISSUE #12
+========================= */
+
+/* Tablets */
+@media (max-width: 900px) {
+
+    main {
+        margin: 30px auto;
+        padding: 0 18px;
+    }
+
+    #book-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .search-container {
+        gap: 10px;
+    }
+
+    #category-filter {
+        min-width: 200px;
+    }
+
+    .details-content {
+        max-width: 90%;
+    }
+}
+
+
+/* Mobile devices */
+@media (max-width: 600px) {
+
+    header {
+        padding: 30px 15px;
+    }
+
+    header h1 {
+        font-size: 1.7rem;
+    }
+
+    header p {
+        font-size: 0.95rem;
+        margin-top: 8px;
+    }
+
+    main {
+        margin: 20px auto;
+        padding: 0 12px;
+    }
+
+    #catalogue {
+        margin-top: 10px;
+    }
+
+    #catalogue h2 {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+
+    /* Search and category filter */
+
+    .search-container {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    #search-input,
+    #category-filter {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        font-size: 15px;
+    }
+
+    /* One book per row */
+
+    #book-list {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .book-card {
+        width: 100%;
+    }
+
+    .book-cover {
+        height: 150px;
+    }
+
+    .book-info {
+        padding: 16px;
+    }
+
+    .book-info h3 {
+        font-size: 1.05rem;
+        line-height: 1.4;
+    }
+
+    .author {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+
+    .category {
+        font-size: 0.8rem;
+    }
+
+    .borrow-button,
+    .details-button,
+    .favorite-button {
+        min-height: 44px;
+    }
+
+    /* Favorites controls */
+
+    .favourites-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .filter-button {
+        width: 100%;
+    }
+
+    /* Book details modal */
+
+    .book-details {
+        padding: 10px;
+        align-items: flex-start;
+        overflow-y: auto;
+    }
+
+    .details-content {
+        width: 100%;
+        max-width: none;
+        margin-top: 20px;
+        padding: 20px 15px;
+        max-height: calc(100vh - 40px);
+    }
+
+    .details-cover {
+        height: 130px;
+        margin-bottom: 20px;
+    }
+
+    .details-info h2 {
+        font-size: 1.3rem;
+        line-height: 1.4;
+        padding-right: 35px;
+    }
+
+    #details-description {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    #details-actions .borrow-button {
+        width: 100%;
+        max-width: none;
+    }
+
+    .close-details {
+        top: 8px;
+        right: 12px;
+        font-size: 28px;
+    }
+}
+
+
+/* Very small phones */
+@media (max-width: 400px) {
+
+    header h1 {
+        font-size: 1.45rem;
+    }
+
+    header p {
+        font-size: 0.85rem;
+    }
+
+    .book-cover {
+        height: 120px;
+    }
+
+    .book-info {
+        padding: 14px;
+    }
+
+    .book-info h3 {
+        font-size: 1rem;
+    }
+
+    .details-content {
+        padding: 18px 12px;
+    }
+
+    .details-cover {
+        height: 110px;
+    }
+
+}
