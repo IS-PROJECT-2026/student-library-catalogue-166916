@@ -1,6 +1,6 @@
 const books = [
     {
-        id: 1,
+        id: 0,
         title: "Foundations of Information Ethics",
         author: "John T. F. Burgess & Emily J. M. Knox",
         category: "Information Ethics",
@@ -9,7 +9,7 @@ const books = [
         favorite: false
     },
     {
-        id: 2,
+        id: 1,
         title: "Archives: Principles and Practices",
         author: "Laura A. Millar",
         category: "Archives",
@@ -18,7 +18,7 @@ const books = [
         favorite: false
     },
     {
-        id: 3,
+        id: 2,
         title: "Visual Research Methods: An Introduction for Library and Information Studies",
         author: "Shailoo Bedi & Jenaya Webb",
         category: "Research Methods",
@@ -27,7 +27,7 @@ const books = [
         favorite: false
     },
     {
-        id: 4,
+        id: 3,
         title: "Management Basics for Information Professionals",
         author: "G. Edward Evans & Stacey Greenwell",
         category: "Library Management",
@@ -36,7 +36,7 @@ const books = [
         favorite: false
     },
     {
-        id: 5,
+        id: 4,
         title: "Essential Law for Information Professionals",
         author: "Paul Pedley",
         category: "Information Law",
@@ -45,7 +45,7 @@ const books = [
         favorite: false
     },
     {
-        id: 6,
+        id: 5,
         title: "Foundations of Information Policy",
         author: "Paul T. Jaeger & Natalie Greene Taylor",
         category: "Information Policy",
@@ -54,7 +54,7 @@ const books = [
         favorite: false
     },
     {
-        id: 7,
+        id: 6,
         title: "Introduction to Knowledge Organization",
         author: "Claudio Gnoli",
         category: "Knowledge Organization",
@@ -63,7 +63,7 @@ const books = [
         favorite: false
     },
     {
-        id: 8,
+        id: 7,
         title: "Copyright: Interpreting the Law for Libraries, Archives and Information Services",
         author: "Graham P. Cornish",
         category: "Copyright",
@@ -72,7 +72,7 @@ const books = [
         favorite: false
     },
     {
-        id: 9,
+        id: 8,
         title: "Metadata",
         author: "Marcia Lei Zeng & Jian Qin",
         category: "Metadata",
@@ -83,9 +83,6 @@ const books = [
 ];
 
 
-/* =========================
-   LOAD SAVED USER DATA
-========================= */
 
 function loadUserData() {
 
@@ -120,9 +117,6 @@ function loadUserData() {
 }
 
 
-/* =========================
-   SAVE USER DATA
-========================= */
 
 function saveUserData() {
 
@@ -139,9 +133,6 @@ function saveUserData() {
 }
 
 
-/* =========================
-   DISPLAY BOOKS
-========================= */
 
 function displayBooks(bookList) {
 
@@ -215,9 +206,6 @@ function displayBooks(bookList) {
 }
 
 
-/* =========================
-   MAIN APPLICATION
-========================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -237,16 +225,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("book-list");
 
 
-    /* =========================
-       LOAD SAVED DATA FIRST
-    ========================= */
-
     loadUserData();
 
-
-    /* =========================
-       FILTER BOOKS
-    ========================= */
 
     function filterBooks() {
 
@@ -289,10 +269,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =========================
-       BORROW BOOK
-    ========================= */
-
     bookListContainer.addEventListener(
         "click",
         (event) => {
@@ -318,8 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             book.available = false;
 
-            /* Save borrowing status */
-
+            
             saveUserData();
 
             alert(
@@ -331,10 +306,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     );
 
-
-    /* =========================
-       VIEW BOOK DETAILS
-    ========================= */
 
     bookListContainer.addEventListener(
         "click",
@@ -416,9 +387,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /* =========================
-       CLOSE BOOK DETAILS
-    ========================= */
 
     closeDetails.addEventListener(
         "click",
@@ -430,7 +398,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /* Close details by clicking outside */
+    
 
     bookDetails.addEventListener(
         "click",
@@ -445,10 +413,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     );
 
-
-    /* =========================
-       FAVORITES
-    ========================= */
 
     bookListContainer.addEventListener(
         "click",
@@ -475,8 +439,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             book.favorite = !book.favorite;
 
-            /* Save favorite status */
-
             saveUserData();
 
             filterBooks();
@@ -485,9 +447,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /* =========================
-       SEARCH
-    ========================= */
+    
 
     searchInput.addEventListener(
         "input",
@@ -495,19 +455,12 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /* =========================
-       CATEGORY FILTER
-    ========================= */
-
     categoryFilter.addEventListener(
         "change",
         filterBooks
     );
 
 
-    /* =========================
-       INITIAL DISPLAY
-    ========================= */
 
     filterBooks();
 
