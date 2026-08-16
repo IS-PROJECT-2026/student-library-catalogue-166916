@@ -82,17 +82,78 @@ const books = [
     }
 ];
 
+
+/* =========================
+   LOAD SAVED USER DATA
+========================= */
+
+function loadUserData() {
+
+    const savedData = localStorage.getItem("libraryBooks");
+
+    if (!savedData) {
+        return;
+    }
+
+    try {
+
+        const savedBooks = JSON.parse(savedData);
+
+        savedBooks.forEach((savedBook) => {
+
+            const book = books.find(
+                (book) => book.id === savedBook.id
+            );
+
+            if (book) {
+                book.available = savedBook.available;
+                book.favorite = savedBook.favorite;
+            }
+
+        });
+
+    } catch (error) {
+
+        console.error("Could not load saved library data:", error);
+
+    }
+}
+
+
+/* =========================
+   SAVE USER DATA
+========================= */
+
+function saveUserData() {
+
+    const userData = books.map((book) => ({
+        id: book.id,
+        available: book.available,
+        favorite: book.favorite
+    }));
+
+    localStorage.setItem(
+        "libraryBooks",
+        JSON.stringify(userData)
+    );
+}
+
+
 /* =========================
    DISPLAY BOOKS
 ========================= */
 
 function displayBooks(bookList) {
-    const bookListContainer = document.getElementById("book-list");
+
+    const bookListContainer =
+        document.getElementById("book-list");
 
     bookListContainer.innerHTML = "";
 
     bookList.forEach((book) => {
-        const bookCard = document.createElement("article");
+
+        const bookCard =
+            document.createElement("article");
 
         bookCard.className = "book-card";
 
@@ -102,14 +163,21 @@ function displayBooks(bookList) {
             </div>
 
             <div class="book-info">
+
                 <h3>${book.title}</h3>
 
-                <p class="author">By ${book.author}</p>
+                <p class="author">
+                    By ${book.author}
+                </p>
 
-                <p class="category">${book.category}</p>
+                <p class="category">
+                    ${book.category}
+                </p>
 
                 <p class="${book.available ? "available" : "unavailable"}">
-                    ${book.available ? "Available" : "Currently Borrowed"}
+                    ${book.available
+                        ? "Available"
+                        : "Currently Borrowed"}
                 </p>
 
                 <button
@@ -117,7 +185,9 @@ function displayBooks(bookList) {
                     data-book-id="${book.id}"
                     ${book.available ? "" : "disabled"}
                 >
-                    ${book.available ? "Borrow Book" : "Unavailable"}
+                    ${book.available
+                        ? "Borrow Book"
+                        : "Unavailable"}
                 </button>
 
                 <button
@@ -131,50 +201,79 @@ function displayBooks(bookList) {
                     class="favorite-button"
                     data-book-id="${book.id}"
                 >
-                    ${book.favorite ? "★ Remove Favorite" : "☆ Add to Favorites"}
+                    ${book.favorite
+                        ? "★ Remove Favorite"
+                        : "☆ Add to Favorites"}
                 </button>
+
             </div>
         `;
 
         bookListContainer.appendChild(bookCard);
+
     });
 }
 
 
 /* =========================
-   FILTER BOOKS
+   MAIN APPLICATION
 ========================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const searchInput = document.getElementById("search-input");
-    const categoryFilter = document.getElementById("category-filter");
+    const searchInput =
+        document.getElementById("search-input");
 
-    const bookDetails = document.getElementById("book-details");
-    const closeDetails = document.getElementById("close-details");
+    const categoryFilter =
+        document.getElementById("category-filter");
 
-    const bookListContainer = document.getElementById("book-list");
+    const bookDetails =
+        document.getElementById("book-details");
 
+    const closeDetails =
+        document.getElementById("close-details");
+
+    const bookListContainer =
+        document.getElementById("book-list");
+
+
+    /* =========================
+       LOAD SAVED DATA FIRST
+    ========================= */
+
+    loadUserData();
+
+
+    /* =========================
+       FILTER BOOKS
+    ========================= */
 
     function filterBooks() {
 
-        const searchQuery = searchInput.value.toLowerCase().trim();
+        const searchQuery =
+            searchInput.value.toLowerCase().trim();
 
-        const selectedCategory = categoryFilter.value;
+        const selectedCategory =
+            categoryFilter.value;
 
-        const filteredBooks = books.filter((book) => {
+        const filteredBooks =
+            books.filter((book) => {
 
-            const matchesSearch =
-                book.title.toLowerCase().includes(searchQuery) ||
-                book.author.toLowerCase().includes(searchQuery) ||
-                book.category.toLowerCase().includes(searchQuery);
+                const matchesSearch =
+                    book.title.toLowerCase()
+                        .includes(searchQuery) ||
+                    book.author.toLowerCase()
+                        .includes(searchQuery) ||
+                    book.category.toLowerCase()
+                        .includes(searchQuery);
 
-            const matchesCategory =
-                selectedCategory === "all" ||
-                book.category === selectedCategory;
+                const matchesCategory =
+                    selectedCategory === "all" ||
+                    book.category === selectedCategory;
 
-            return matchesSearch && matchesCategory;
-        });
+                return matchesSearch && matchesCategory;
+
+            });
 
         displayBooks(filteredBooks);
 
@@ -185,6 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     No books found matching your search and category.
                 </p>
             `;
+
         }
     }
 
@@ -193,158 +293,216 @@ document.addEventListener("DOMContentLoaded", () => {
        BORROW BOOK
     ========================= */
 
-    bookListContainer.addEventListener("click", (event) => {
+    bookListContainer.addEventListener(
+        "click",
+        (event) => {
 
-        if (!event.target.classList.contains("borrow-button")) {
-            return;
+            if (
+                !event.target.classList
+                    .contains("borrow-button")
+            ) {
+                return;
+            }
+
+            const bookId =
+                Number(event.target.dataset.bookId);
+
+            const book =
+                books.find(
+                    (book) => book.id === bookId
+                );
+
+            if (!book || !book.available) {
+                return;
+            }
+
+            book.available = false;
+
+            /* Save borrowing status */
+
+            saveUserData();
+
+            alert(
+                `You have successfully borrowed "${book.title}".`
+            );
+
+            filterBooks();
+
         }
-
-        const bookId = Number(event.target.dataset.bookId);
-
-        const book = books.find((book) => book.id === bookId);
-
-        if (!book) {
-            return;
-        }
-
-        if (!book.available) {
-            return;
-        }
-
-        book.available = false;
-
-        alert(`You have successfully borrowed "${book.title}".`);
-
-        filterBooks();
-    });
+    );
 
 
     /* =========================
        VIEW BOOK DETAILS
     ========================= */
 
-    bookListContainer.addEventListener("click", (event) => {
+    bookListContainer.addEventListener(
+        "click",
+        (event) => {
 
-        if (!event.target.classList.contains("details-button")) {
-            return;
+            if (
+                !event.target.classList
+                    .contains("details-button")
+            ) {
+                return;
+            }
+
+            const bookId =
+                Number(event.target.dataset.bookId);
+
+            const book =
+                books.find(
+                    (book) => book.id === bookId
+                );
+
+            if (!book) {
+                return;
+            }
+
+            document.getElementById("details-title")
+                .textContent = book.title;
+
+            document.getElementById("details-author")
+                .textContent = `By ${book.author}`;
+
+            document.getElementById("details-category")
+                .textContent = `Category: ${book.category}`;
+
+            document.getElementById("details-description")
+                .textContent = book.description;
+
+            const availability =
+                document.getElementById(
+                    "details-availability"
+                );
+
+            availability.textContent =
+                book.available
+                    ? "Availability: Available"
+                    : "Availability: Currently Borrowed";
+
+            availability.className =
+                book.available
+                    ? "available"
+                    : "unavailable";
+
+            const detailsActions =
+                document.getElementById(
+                    "details-actions"
+                );
+
+            detailsActions.innerHTML =
+                book.available
+                    ? `
+                        <button
+                            class="borrow-button"
+                            data-book-id="${book.id}"
+                        >
+                            Borrow Book
+                        </button>
+                    `
+                    : `
+                        <button
+                            class="borrow-button"
+                            disabled
+                        >
+                            Currently Unavailable
+                        </button>
+                    `;
+
+            bookDetails.classList.remove("hidden");
+
         }
-
-        const bookId = Number(event.target.dataset.bookId);
-
-        const book = books.find((book) => book.id === bookId);
-
-        if (!book) {
-            return;
-        }
-
-        document.getElementById("details-title").textContent =
-            book.title;
-
-        document.getElementById("details-author").textContent =
-            `By ${book.author}`;
-
-        document.getElementById("details-category").textContent =
-            `Category: ${book.category}`;
-
-        document.getElementById("details-description").textContent =
-            book.description;
-
-        const availability =
-            document.getElementById("details-availability");
-
-        availability.textContent = book.available
-            ? "Availability: Available"
-            : "Availability: Currently Borrowed";
-
-        availability.className = book.available
-            ? "available"
-            : "unavailable";
-
-        const detailsActions =
-            document.getElementById("details-actions");
-
-        detailsActions.innerHTML = book.available
-            ? `
-                <button
-                    class="borrow-button"
-                    data-book-id="${book.id}"
-                >
-                    Borrow Book
-                </button>
-            `
-            : `
-                <button
-                    class="borrow-button"
-                    disabled
-                >
-                    Currently Unavailable
-                </button>
-            `;
-
-        bookDetails.classList.remove("hidden");
-    });
+    );
 
 
     /* =========================
        CLOSE BOOK DETAILS
     ========================= */
 
-    closeDetails.addEventListener("click", () => {
-
-        bookDetails.classList.add("hidden");
-
-    });
-
-
-    /* Close details by clicking outside */
-
-    bookDetails.addEventListener("click", (event) => {
-
-        if (event.target === bookDetails) {
+    closeDetails.addEventListener(
+        "click",
+        () => {
 
             bookDetails.classList.add("hidden");
 
         }
+    );
 
-    });
+
+    /* Close details by clicking outside */
+
+    bookDetails.addEventListener(
+        "click",
+        (event) => {
+
+            if (event.target === bookDetails) {
+
+                bookDetails.classList.add("hidden");
+
+            }
+
+        }
+    );
 
 
     /* =========================
        FAVORITES
     ========================= */
 
-    bookListContainer.addEventListener("click", (event) => {
+    bookListContainer.addEventListener(
+        "click",
+        (event) => {
 
-        if (!event.target.classList.contains("favorite-button")) {
-            return;
+            if (
+                !event.target.classList
+                    .contains("favorite-button")
+            ) {
+                return;
+            }
+
+            const bookId =
+                Number(event.target.dataset.bookId);
+
+            const book =
+                books.find(
+                    (book) => book.id === bookId
+                );
+
+            if (!book) {
+                return;
+            }
+
+            book.favorite = !book.favorite;
+
+            /* Save favorite status */
+
+            saveUserData();
+
+            filterBooks();
+
         }
-
-        const bookId = Number(event.target.dataset.bookId);
-
-        const book = books.find((book) => book.id === bookId);
-
-        if (!book) {
-            return;
-        }
-
-        book.favorite = !book.favorite;
-
-        filterBooks();
-    });
+    );
 
 
     /* =========================
        SEARCH
     ========================= */
 
-    searchInput.addEventListener("input", filterBooks);
+    searchInput.addEventListener(
+        "input",
+        filterBooks
+    );
 
 
     /* =========================
        CATEGORY FILTER
     ========================= */
 
-    categoryFilter.addEventListener("change", filterBooks);
+    categoryFilter.addEventListener(
+        "change",
+        filterBooks
+    );
 
 
     /* =========================
