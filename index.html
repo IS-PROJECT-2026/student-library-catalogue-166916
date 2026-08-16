@@ -9,11 +9,34 @@
 <body>
 
     <header>
-        <h1>Student Library Catalogue</h1>
-        <p>Find available books for students.</p>
+        <div class="header-content">
+            <h1>Student Library Catalogue</h1>
+
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#catalogue">Catalogue</a>
+                <a href="#favorites">Favorites</a>
+            </nav>
+        </div>
     </header>
 
     <main>
+
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h2>Discover Your Next Book</h2>
+
+                <p>
+                    Explore the student library catalogue, find useful
+                    resources, and easily manage your favourite books.
+                </p>
+
+                <a href="#catalogue" class="catalogue-button">
+                    Browse Catalogue
+                </a>
+            </div>
+        </section>
+
         <section id="catalogue">
             <h2>Book Catalogue</h2>
 
@@ -44,8 +67,7 @@
 
             </div>
 
-            <!-- Favorites Controls -->
-            <div class="favourites-controls">
+            <div id="favorites" class="favourites-controls">
 
                 <button
                     id="all-books-button"
@@ -67,8 +89,6 @@
 
         </section>
 
-
-        <!-- Book Details Modal -->
         <div id="book-details" class="book-details hidden">
 
             <div class="details-content">
@@ -114,6 +134,11 @@
         </div>
 
     </main>
+
+    <footer>
+        <p>&copy; 2026 Student Library Catalogue</p>
+        <p>Designed for students to easily discover and manage library resources.</p>
+    </footer>
 
     <script src="js/script.js"></script>
 

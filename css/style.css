@@ -4,6 +4,10 @@
     padding: 0;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: Arial, sans-serif;
     background: #47484a;
@@ -11,30 +15,99 @@ body {
 }
 
 header {
-    padding: 40px 20px;
-    text-align: center;
     background: #e1a714;
     color: white;
+    padding: 22px 50px;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    font-size: 28px;
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.hero {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 80px 60px;
+    background: #252629;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.hero h2 {
+    color: white;
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    color: #d4d4d4;
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.catalogue-button {
+    display: inline-block;
+    padding: 13px 25px;
+    background: #e1a714;
+    color: white;
+    text-decoration: none;
+    border-radius: 7px;
+    font-weight: bold;
+}
+
+.catalogue-button:hover {
+    background: #c8930e;
 }
 
 main {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 40px auto;
     padding: 0 20px;
 }
 
 #catalogue {
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 #catalogue h2 {
     margin-bottom: 25px;
     text-align: center;
+    color: white;
 }
 
 #book-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 25px;
 }
 
@@ -83,6 +156,7 @@ main {
     background: #eef2f8;
     border-radius: 20px;
     font-size: 0.85rem;
+    color: #333;
 }
 
 .available {
@@ -116,34 +190,9 @@ main {
 }
 
 .search-container {
-    margin-bottom: 25px;
-}
-
-#search-input {
-    width: 100%;
-    max-width: 600px;
-    padding: 12px 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
-#search-input:focus {
-    outline: none;
-    border-color: #333;
-}
-
-.no-results {
-    text-align: center;
-    padding: 30px;
-    font-size: 18px;
-}
-
-.search-container {
     display: flex;
     gap: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 #search-input,
@@ -169,7 +218,11 @@ main {
     border-color: #333;
 }
 
-/* Book Details Button */
+.no-results {
+    text-align: center;
+    padding: 30px;
+    font-size: 18px;
+}
 
 .details-button {
     width: 100%;
@@ -186,66 +239,41 @@ main {
     background: #eef2f8;
 }
 
-
-/* Book Details Modal */
-
 .book-details {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.65);
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     padding: 20px;
     z-index: 1000;
 }
-
-
-/* Hidden state */
 
 .book-details.hidden {
     display: none;
 }
 
-
-/* Details window */
-
 .details-content {
     position: relative;
-
     background: white;
-
     width: 100%;
     max-width: 700px;
-
     border-radius: 12px;
-
     padding: 30px;
-
     max-height: 90vh;
     overflow-y: auto;
-
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
-
-/* Close button */
-
 .close-details {
     position: absolute;
-
     top: 12px;
     right: 18px;
-
     border: none;
     background: none;
-
     font-size: 32px;
-
     color: #555;
-
     cursor: pointer;
 }
 
@@ -253,30 +281,18 @@ main {
     color: #b42318;
 }
 
-
-/* Details cover */
-
 .details-cover {
     height: 180px;
-
     background: #dbe4f5;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     border-radius: 8px;
-
     margin-bottom: 25px;
-
     color: #1f3c88;
-
     font-size: 1.4rem;
     font-weight: bold;
 }
-
-
-/* Details information */
 
 .details-info h2 {
     color: #1f3c88;
@@ -291,15 +307,10 @@ main {
 
 .details-category {
     display: inline-block;
-
     padding: 6px 12px;
-
     background: #eef2f8;
-
     border-radius: 20px;
-
     font-size: 0.9rem;
-
     margin-bottom: 20px;
 }
 
@@ -318,36 +329,9 @@ main {
     margin-bottom: 15px;
 }
 
-
-/* Details actions */
-
 #details-actions .borrow-button {
     max-width: 250px;
 }
-
-
-/* Responsive layout */
-
-@media (max-width: 700px) {
-
-    .search-container {
-        flex-direction: column;
-    }
-
-    #category-filter {
-        width: 100%;
-    }
-
-    .details-content {
-        padding: 25px 20px;
-    }
-
-    .details-cover {
-        height: 140px;
-    }
-}
-
-/* Favorites controls */
 
 .favourites-controls {
     display: flex;
@@ -374,20 +358,14 @@ main {
     color: white;
 }
 
-
-/* Favorite button */
-
 .favorite-button {
     width: 100%;
     margin-top: 10px;
     padding: 10px;
-
     border: 1px solid #d4a017;
     border-radius: 6px;
-
     background: white;
     color: #8a6800;
-
     cursor: pointer;
     font-size: 14px;
 }
@@ -402,208 +380,20 @@ main {
     font-weight: bold;
 }
 
-/* =========================
-   RESPONSIVE UI - ISSUE #12
-========================= */
-
-/* Tablets */
-@media (max-width: 900px) {
-
-    main {
-        margin: 30px auto;
-        padding: 0 18px;
-    }
-
-    #book-list {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 20px;
-    }
-
-    .search-container {
-        gap: 10px;
-    }
-
-    #category-filter {
-        min-width: 200px;
-    }
-
-    .details-content {
-        max-width: 90%;
-    }
+footer {
+    margin-top: 70px;
+    padding: 30px;
+    background: #252629;
+    color: #cfcfcf;
+    text-align: center;
 }
 
-
-/* Mobile devices */
-@media (max-width: 600px) {
-
-    header {
-        padding: 30px 15px;
-    }
-
-    header h1 {
-        font-size: 1.7rem;
-    }
-
-    header p {
-        font-size: 0.95rem;
-        margin-top: 8px;
-    }
-
-    main {
-        margin: 20px auto;
-        padding: 0 12px;
-    }
-
-    #catalogue {
-        margin-top: 10px;
-    }
-
-    #catalogue h2 {
-        font-size: 1.4rem;
-        margin-bottom: 20px;
-    }
-
-    /* Search and category filter */
-
-    .search-container {
-        flex-direction: column;
-        width: 100%;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    #search-input,
-    #category-filter {
-        width: 100%;
-        max-width: none;
-        min-width: 0;
-        font-size: 15px;
-    }
-
-    /* One book per row */
-
-    #book-list {
-        grid-template-columns: 1fr;
-        gap: 18px;
-    }
-
-    .book-card {
-        width: 100%;
-    }
-
-    .book-cover {
-        height: 150px;
-    }
-
-    .book-info {
-        padding: 16px;
-    }
-
-    .book-info h3 {
-        font-size: 1.05rem;
-        line-height: 1.4;
-    }
-
-    .author {
-        font-size: 0.9rem;
-        line-height: 1.4;
-    }
-
-    .category {
-        font-size: 0.8rem;
-    }
-
-    .borrow-button,
-    .details-button,
-    .favorite-button {
-        min-height: 44px;
-    }
-
-    /* Favorites controls */
-
-    .favourites-controls {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .filter-button {
-        width: 100%;
-    }
-
-    /* Book details modal */
-
-    .book-details {
-        padding: 10px;
-        align-items: flex-start;
-        overflow-y: auto;
-    }
-
-    .details-content {
-        width: 100%;
-        max-width: none;
-        margin-top: 20px;
-        padding: 20px 15px;
-        max-height: calc(100vh - 40px);
-    }
-
-    .details-cover {
-        height: 130px;
-        margin-bottom: 20px;
-    }
-
-    .details-info h2 {
-        font-size: 1.3rem;
-        line-height: 1.4;
-        padding-right: 35px;
-    }
-
-    #details-description {
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-
-    #details-actions .borrow-button {
-        width: 100%;
-        max-width: none;
-    }
-
-    .close-details {
-        top: 8px;
-        right: 12px;
-        font-size: 28px;
-    }
+footer p:first-child {
+    color: white;
+    font-weight: bold;
+    margin-bottom: 8px;
 }
 
-
-/* Very small phones */
-@media (max-width: 400px) {
-
-    header h1 {
-        font-size: 1.45rem;
-    }
-
-    header p {
-        font-size: 0.85rem;
-    }
-
-    .book-cover {
-        height: 120px;
-    }
-
-    .book-info {
-        padding: 14px;
-    }
-
-    .book-info h3 {
-        font-size: 1rem;
-    }
-
-    .details-content {
-        padding: 18px 12px;
-    }
-
-    .details-cover {
-        height: 110px;
-    }
-
+footer p:last-child {
+    font-size: 14px;
 }
