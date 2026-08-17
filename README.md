@@ -1,3 +1,7 @@
+## Live Demo
+ [View the live site](https://is-project-2026.github.io/student-library-catalogue-166916/)
+
+
 # Project : Student Library Catalogue
 
 A functional web-based library catalogue designed for students to browse, search, filter, and interact with books available in the library.
